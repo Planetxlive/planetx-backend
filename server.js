@@ -18,7 +18,7 @@ const app = express();
 // Middleware
 // Configure CORS with specific options
 const corsOptions = {
-  origin: ['http://localhost:3000', 'https://www.planetx-live.com', 'https://planetx-live.com'],
+  origin: ['http://localhost:8080', 'https://www.planetx-live.com', 'https://planetx-live.com',"http://localhost:3000"],
  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,

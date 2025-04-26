@@ -13,53 +13,13 @@ const { s3, bucketName } = require("../../utils/s3");
 
 exports.addProperty = async (req, res) => {
   try {
-    console.log(JSON.parse(req.body.propertyData));
-    console.log("images", req.files.images);
+    console.log("req.body: ", req.body);
 
     const userId = req.user.userId;
-    const propertyData = JSON.parse(req.body.propertyData);
+    const propertyData = req.body.propertyData;
 
     if (!userId || !propertyData) {
       return res.status(400).json({ message: "User ID and Property data are required" });
-    }
-
-    let images = [];
-    if (req.files?.images) {
-      images = await Promise.all(
-        req.files.images.map(async (file) => {
-          const fileName = `${Date.now()}-${file.originalname}`;
-          const uploadParams = {
-            Bucket: bucketName, 
-            Key: `properties/images/${fileName}`,
-            Body: file.buffer,
-            ContentType: file.mimetype, 
-          };
-
-          await s3.send(new PutObjectCommand(uploadParams));
-
-          return {
-            name: file.originalname,
-            url: `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/properties/images/${fileName}`,
-          };
-        })
-      );
-    }
-
-    let video = null;
-    if (req.files?.video) {
-      console.log("video", req.files.video);
-      const videoFile = req.files.video[0];
-      const fileName = `${Date.now()}-${videoFile.originalname}`;
-      const uploadParams = {
-        Bucket: bucketName,
-        Key: `properties/videos/${fileName}`,
-        Body: videoFile.buffer,
-        ContentType: videoFile.mimetype,
-      };
-
-      await s3.send(new PutObjectCommand(uploadParams));
-
-      video = `https://${bucketName}.s3.${process.env.AWS_REGION}.amazonaws.com/properties/videos/${fileName}`;
     }
 
     const user = await User.findById(userId);
@@ -76,8 +36,11 @@ exports.addProperty = async (req, res) => {
     const newProperty = new PropertyCategory({
       ...propertyData,
       user: userId,
-      images,
-      video,
+      images: req.body.images.map(url => ({
+        name: url.split('/').pop(), // Extract filename from URL
+        url: url
+      })),
+      video: req.body.video,
     });
 
     console.log(newProperty);

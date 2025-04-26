@@ -47,11 +47,6 @@ const router = express.Router();
 router.get("/alluser-properties", getActiveProperties);
 router.post(
   "/add",
-  upload.fields([
-    { name: "images", maxCount: 5 },
-    { name: "video", maxCount: 1 },
-  ]),
-  uploadToS3,
   addProperty
 );
 router.patch(
