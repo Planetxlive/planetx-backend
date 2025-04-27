@@ -13,14 +13,25 @@ exports.getActiveProperties = async (req, res) => {
         populate: { path: "reviews" },
       })
       .lean();
-      console.log(user);
 
+      console.log(user.properties[0]);
+      const cloudfrontBaseUrl = process.env.CLOUDFRONT_BASE_URL;
+      const propertyData = user.properties.map((property) => {
+        const modifiedImageUrl = property.images.map(img => {
+          const fileNameWithPath = img.url.split("amazonaws.com/")[1] || img.url;
+          return `${cloudfrontBaseUrl}${fileNameWithPath}`;
+        })
+        return {
+          ...property,
+          images: modifiedImageUrl,
+        }
+      })
     if (!user) {
       return res.status(404).json({ error: "User not found." });
     }
     res.status(200).json({
       message: "properties fetched successfully.",
-      properties: user.properties,
+      properties: propertyData,
     });
   } catch (error) {
     console.log("Error fetching  properties:", error);
