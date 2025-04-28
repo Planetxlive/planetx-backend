@@ -81,12 +81,18 @@ const filterProperties = async (req, res) => {
 };
 
 const getPropertyByPg = async (req,res)=>{
-    try {
-        const property = await basePropertySchema.find({propertyType:"PG"})
-        res.status(200).json(property)
-    } catch (error) {
-        res.status(500).json({message:"Error fetching property",error})
-    }
+    
+        const role = req.user.role;
+        if(role !== "admin"){
+            return res.status(403).json({message:"You are not an admin"})
+        } 
+        try {
+            const property = await basePropertySchema.find({category:"Pg"})
+            res.status(200).json(property)
+        } catch (error) {
+            res.status(500).json({message:"Error fetching property",error})
+        }
+   
 }
 
 const getPropertyByUserId = async (req, res) => {
