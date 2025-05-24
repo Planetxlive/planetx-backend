@@ -75,24 +75,38 @@ const getWishlists = async (req, res) => {
 
 const removeFromWishlist = async (req, res) => {
   const { propertyId } = req.params;
-  console.log(propertyId);
-  const mobile = req.user.mobile; // Assuming user ID is available from auth middleware
-  console.log(mobile);
+  const userId = req.user.userId; 
   try {
 
-    const user = await User.findOne({ mobile });
+    const wishlist = await Wishlist.findOne({ user: userId });
+    if (!wishlist) {
+      return res.status(404).json({ error: "Wishlist not found" });
+    }
+
     
+    if (!wishlist.properties.includes(propertyId)) {
+      return res.status(400).json({ error: "Property not found in wishlist" });
+    }
 
-    const userId = user._id.toString();
-    console.log(userId);
-
-   const deleteWishlist =  await Wishlist.deleteOne(
+   
+    await Wishlist.updateOne(
       { user: userId },
       { $pull: { properties: propertyId } }
     );
-    console.log(deleteWishlist);
+
+    
+    const updatedWishlist = await Wishlist.findOne({ user: userId });
+    if (updatedWishlist.properties.length === 0) {
+      await Wishlist.deleteOne({ user: userId });
+      await User.updateOne(
+        { _id: userId },
+        { $pull: { wishlist: updatedWishlist._id } }
+      );
+    }
+
     res.status(200).json({ message: "Property removed from wishlist" });
   } catch (error) {
+    console.error("Error removing property from wishlist:", error);
     res.status(500).json({ error: "Failed to remove property" });
   }
 };

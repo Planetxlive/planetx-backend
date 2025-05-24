@@ -3,7 +3,6 @@ const User = require("../../modals/Users");
 const getAllUsers = async (req, res) => {
   try {
     const role = req.user.role;
-    console.log(role);
     if (role !== "admin") {
       return res.status(403).json({ message: "You are not an admin" });
     }

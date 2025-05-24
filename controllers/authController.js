@@ -26,7 +26,6 @@ exports.sendOTP = async (req, res) => {
     await sendSMS(mobile, `Your OTP for Registering on Planet X is ${otp}`);
     res.status(200).json({ message: "OTP sent successfully" });
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Error sending OTP", error });
   }
 };
@@ -80,7 +79,6 @@ exports.verifyOTP = async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Error verifying OTP", error: error.message });
   }
 };
@@ -138,7 +136,6 @@ exports.verifyNewUserOTP = async (req, res) => {
     });
 
   } catch (error) {
-    console.log(error);
     res.status(500).json({ message: "Error verifying OTP", error: error.message });
   }
 };

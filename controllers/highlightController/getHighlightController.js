@@ -3,7 +3,7 @@ const User = require("../../modals/Users");
 
 exports.getAvailablePropertiesForReel = async (req, res) => {
   const { userId } = req.user;
-console.log("user Data",req.user)
+
   if (!userId) {
     return res.status(400).json({ error: "User ID is required." });
   }
@@ -41,7 +41,6 @@ console.log("user Data",req.user)
       });
     }
 
-    console.log("Available properties:", availableProperties);
 
     const propertiesForReel = availableProperties.map((property) => ({
       propertyId: property._id,
@@ -75,7 +74,7 @@ console.log("user Data",req.user)
           : "N/A"),
     }));
 
-    console.log("Properties for reel:", propertiesForReel);
+
 
     const cloudfrontBaseUrl = process.env.CLOUDFRONT_BASE_URL;
     const s3Base = process.env.S3_BASE_URL;

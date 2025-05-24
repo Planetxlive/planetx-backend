@@ -3,7 +3,7 @@ const User = require("../../modals/Users");
 exports.updateUser = async (req, res) => {
   const mobile = req.user.mobile;
   const { name, email, whatsappMobile, role, state, city } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   if (!mobile) {
     return res.status(400).json({ error: "Mobile number is required." });
   }

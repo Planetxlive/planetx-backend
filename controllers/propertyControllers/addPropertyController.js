@@ -13,7 +13,7 @@ const { s3, bucketName } = require("../../utils/s3");
 
 exports.addProperty = async (req, res) => {
   try {
-    console.log("req.body: ", req.body);
+
 
     const userId = req.user.userId;
     const propertyData = req.body.propertyData;
@@ -28,7 +28,7 @@ exports.addProperty = async (req, res) => {
     }
 
     const PropertyCategory = Property.discriminators[propertyData.category];
-    console.log(PropertyCategory);
+
     // if (!PropertyCategory) {
     //   return res.status(400).json({ message: "Valid Property Category required!" });
     // }
@@ -43,7 +43,7 @@ exports.addProperty = async (req, res) => {
       video: req.body.video,
     });
 
-    console.log(newProperty);
+
     const savedProperty = await newProperty.save();
 
     user.properties.push(savedProperty._id);

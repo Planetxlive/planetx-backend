@@ -2,7 +2,7 @@ const User = require("../../modals/Users");
 
 exports.getActiveProperties = async (req, res) => {
   const  mobile  = req.user.mobile;
-  console.log(mobile);
+  // console.log(mobile);
   if (!mobile) {
     return res.status(400).json({ error: "Mobile number is required." });
   }
@@ -14,7 +14,7 @@ exports.getActiveProperties = async (req, res) => {
       })
       .lean();
 
-      console.log(user.properties[0]);
+      // console.log(user.properties[0]);
       const cloudfrontBaseUrl = process.env.CLOUDFRONT_BASE_URL;
       const propertyData = user.properties.map((property) => {
         const modifiedImageUrl = property.images.map(img => {
@@ -34,7 +34,7 @@ exports.getActiveProperties = async (req, res) => {
       properties: propertyData,
     });
   } catch (error) {
-    console.log("Error fetching  properties:", error);
+    // console.log("Error fetching  properties:", error);
     res.status(500).json({
       error: "An error occurred while fetching  properties.",
       details: error.message,

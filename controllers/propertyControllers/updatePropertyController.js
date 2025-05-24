@@ -8,7 +8,7 @@ exports.updateProperty = async (req, res) => {
     const updatedData = req.body.propertyData
       ? JSON.parse(req.body.propertyData)
       : {};
-    console.log(propertyId);
+    // console.log(propertyId);
 
     if (!propertyId) {
       return res.status(400).json({ message: "Property ID is required" });

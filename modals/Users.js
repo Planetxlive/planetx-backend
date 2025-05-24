@@ -36,6 +36,12 @@ const userSchema = new mongoose.Schema({
       ref: "Wishlist",
     },
   ],
+  blogs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Blog",
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", userSchema);

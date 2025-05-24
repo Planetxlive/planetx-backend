@@ -4,7 +4,7 @@ const Property = require("../../modals/PropertyModals/BasePropertySchema");
 exports.editReview = async (req, res) => {
   const { reviewId } = req.params;
   const { stars, text } = req.body;
-  console.log(reviewId, stars, text);
+
 
   if (!stars || !text)
     return res.status(400).json({ message: "Rating and comment are required" });

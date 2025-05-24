@@ -18,7 +18,7 @@ exports.loginAdmin = async (req, res) => {
       );
       res.status(200).json({ message: "Admin login successful", accessToken });
     } catch (error) {
-      console.log(error);
+      
       res.status(500).json({ message: "Error generating token", error });
     }
   } else {

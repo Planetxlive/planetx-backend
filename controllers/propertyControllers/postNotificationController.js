@@ -6,7 +6,7 @@ const User = require("../../modals/Users")
 exports.postNotifications = async (req, res) => {
     const {propertyId, title, text } = req.body;
     const userId = req.user.userId;
-    console.log(req.body);
+    // console.log(req.body);
   
     try {
       // Validate required fields
