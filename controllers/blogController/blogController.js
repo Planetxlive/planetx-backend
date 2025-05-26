@@ -143,8 +143,8 @@ const getBlogs = async (req, res) => {
 };
 
 const getBlogdByUserId = async (req, res) => {
+    console.log("getting post for user buddy")
     const userId = req.user.userId;
-
     if (!userId) {
         return res.status(400).json({ error: "User ID is required" });
     }
@@ -153,7 +153,8 @@ const getBlogdByUserId = async (req, res) => {
         const blogs = await Blog.find({ userId: userId });
         res.status(200).json({ blogs });
     } catch (error) {
-        res.status(500).json({ error: "Failed to get blogs" });
+        console.log(error)
+        res.status(500).json({ error: "Failed to fetch blogs" });
     }
 
 };
