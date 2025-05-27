@@ -42,6 +42,12 @@ const userSchema = new mongoose.Schema({
       ref: "Blog",
     },
   ],
+  parking: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Parking",
+    },
+  ],
 });
 
 module.exports = mongoose.model("User", userSchema);

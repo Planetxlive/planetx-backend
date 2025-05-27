@@ -11,6 +11,7 @@ const feedbackRoutes = require("./routes/feedbackRoutes")
 const { authenticateToken } = require("./middleware/authMiddleware");
 const { pushTestData } = require("./scripts/add_test");
 const blogRoutes = require("./routes/blogRoutes");
+const parkingRoutes = require("./routes/parkingRoutes");
 
 dotenv.config();
 console.log("ENV FILE LOADED:", process.env.AWS_ACCESS_KEY_ID? "Loaded" : "Not Loaded");
@@ -54,6 +55,7 @@ const startServer = async () => {
     app.use("/api/admin", authenticateToken, adminPanelRoutes);
     app.use("/api/centralfeedback", authenticateToken ,feedbackRoutes); // Remove authenticateToken for GET
     app.use("/api/blogs", authenticateToken, blogRoutes);
+    app.use("/api/Parking", authenticateToken,parkingRoutes);
     // Start Server
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
