@@ -11,6 +11,7 @@ const {
 } = require("../controllers/parkingController/parkingController");
 
 
+
 parkingRouter.get("/", getParkings);
 parkingRouter.get("/:id", getParkingById);
 parkingRouter.post("/create",createParking);
