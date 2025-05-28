@@ -26,22 +26,12 @@ const blogSchema = new mongoose.Schema({
     required: true,
   },
   location: {
-    locality: {
-      type: String,
-      required: true,
-    },
-    subLocality: {
-      type: String,
-      required: true,
-    },
-    city: {
-      type: String,
-      required: true,
-    },
-    state: {
-      type: String,
-      required: true,
-    },
+    city: { type: String, required: false },
+    state: { type: String, required: false },
+    locality: { type: String, required: false },
+    subLocality: { type: String },
+    apartment: { type: String },
+    houseNumber: { type: String },
   },
   image: {
     type: String,
