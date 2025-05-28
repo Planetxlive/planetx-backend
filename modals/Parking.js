@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
+require("./ParkingReview");
 
-const parkingSpotSchema = new mongoose.Schema({
+const parkingSchema = new mongoose.Schema({
   userId: {
     type: String,
     required: true,
-    unique: true,
   },
   spotNumber: {
     type: String,
@@ -15,6 +15,27 @@ const parkingSpotSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  city: {
+    type: String,
+    required: true,
+  },
+  state: {
+    type: String,
+    required: true,
+  },
+  locality: {
+    type: String,
+    required: true,
+  },
+  sublocality: {
+    type: String,
+    required: false,
+  },
+  areaNumber: {
+    type: String,
+    required: false,
+  },
+
   type: {
     type: String,
     enum: ['standard', 'disabled', 'electric', 'compact', 'premium'],
@@ -34,10 +55,15 @@ const parkingSpotSchema = new mongoose.Schema({
     enum: ['small', 'medium', 'large'],
     default: 'medium',
   },
-  amenities: [{
-    type: String,
-    enum: ['covered', 'ev_charging', 'security_camera', 'valet'],
-  }],
+
+  amenitiesDetails: {
+    securityGuard: { type: Boolean, default: false },
+    securityCameras: { type: Boolean, default: false },
+    evCharging: { type: Boolean, default: false },
+    valetService: { type: Boolean, default: false },
+    coveredParking: { type: Boolean, default: false }
+  },
+
   images: [{
     type: String,
     validate: {
@@ -47,14 +73,17 @@ const parkingSpotSchema = new mongoose.Schema({
       message: 'Invalid image URL',
     },
   }],
+
   accessibility: {
     wheelchairAccessible: { type: Boolean, default: false },
     nearEntrance: { type: Boolean, default: false },
   },
+
   coordinates: {
     latitude: { type: Number },
     longitude: { type: Number },
   },
+
   createdAt: {
     type: Date,
     default: Date.now,
@@ -63,6 +92,16 @@ const parkingSpotSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+}, {
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
-module.exports = mongoose.model('ParkingSpot', parkingSpotSchema);
+// Virtual for populating reviews
+parkingSchema.virtual('reviews', {
+  ref: 'ParkingReview',
+  localField: '_id',
+  foreignField: 'parkingId',
+});
+
+module.exports = mongoose.model('Parking', parkingSchema);

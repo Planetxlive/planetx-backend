@@ -12,11 +12,12 @@ const {
 
 
 parkingRouter.get("/", getParkings);
-parkingRouter.get("/:id", getParkingById);
+
 parkingRouter.post("/create",createParking);
 parkingRouter.put("/update/:id",updateParking);
 parkingRouter.delete("/delete/:id",deleteParking);
 parkingRouter.get("/user",getParkingsByUserId);
+parkingRouter.get("/:id", getParkingById);
 
 
 
