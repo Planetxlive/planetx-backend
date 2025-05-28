@@ -1,5 +1,5 @@
-const Parking = require("../../models/ParkingSpot");
-const User = require("../../models/User"); // Only if you're linking parkings to a user
+const Parking = require("../../modals/Parking");
+const User = require("../../modals/Users"); // Only if you're linking parkings to a user
 
 // Create a new parking
 const createParking = async (req, res) => {

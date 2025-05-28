@@ -8,7 +8,7 @@ const {
   getParkingById,
   getParkings,
   getParkingsByUserId
-} = require("../controllers/ParkingController");
+} = require("../controllers/ParkingController/parkingController");
 
 
 router.get("/", getParkings);

@@ -5,39 +5,63 @@ const blogSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
-   },
+  },
   title: {
     type: String,
     required: true,
   },
   category: {
     type: String,
-    enum: ["Roommate Wanted", "Property For Sale", "Property For Rent", "Community Updates", "Market Insights"],
+    enum: [
+      "Roommate Wanted",
+      "Property For Sale",
+      "Property For Rent",
+      "Community Updates",
+      "Market Insights",
+    ],
     required: true,
   },
-   description: {
+  description: {
     type: String,
     required: true,
-   },
-   image: {
+  },
+  location: {
+    locality: {
+      type: String,
+      required: true,
+    },
+    subLocality: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+  },
+  image: {
     type: String,
-   }, 
-   contactInfo: {
+  },
+  contactInfo: {
     type: String,
     required: true,
-   },
-   createdAt: {
+  },
+  createdAt: {
     type: Date,
     default: Date.now,
-   },
-   updatedAt: {
+  },
+  updatedAt: {
     type: Date,
     default: Date.now,
-   },
-   isApproved: {
+  },
+  isApproved: {
     type: Boolean,
     default: true,
-   }
+  },
 });
 
 module.exports = mongoose.model("Blog", blogSchema);
