@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+const parkingRouter = express.Router();
 
 const {
   createParking,
@@ -8,17 +8,17 @@ const {
   getParkingById,
   getParkings,
   getParkingsByUserId
-} = require("../controllers/ParkingController");
+} = require("../controllers/parkingController/parkingController");
 
 
-router.get("/", getParkings);
-router.get("/:id", getParkingById);
-router.post("/create",createParking);
-router.put("/update/:id",updateParking);
-router.delete("/delete/:id",deleteParking);
-router.get("/user",getParkingsByUserId);
+parkingRouter.get("/", getParkings);
+parkingRouter.get("/:id", getParkingById);
+parkingRouter.post("/create",createParking);
+parkingRouter.put("/update/:id",updateParking);
+parkingRouter.delete("/delete/:id",deleteParking);
+parkingRouter.get("/user",getParkingsByUserId);
 
 
 
 
-module.exports =router;
+module.exports =parkingRouter;
