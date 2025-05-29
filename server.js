@@ -12,6 +12,7 @@ const { authenticateToken } = require("./middleware/authMiddleware");
 const { pushTestData } = require("./scripts/add_test");
 const blogRoutes = require("./routes/blogRoutes");
 const parkingRouter = require("./routes/parkingRoutes");
+const gymRouter = require("./routes/gymRoutes");
 
 dotenv.config();
 console.log("ENV FILE LOADED:", process.env.AWS_ACCESS_KEY_ID? "Loaded" : "Not Loaded");
@@ -56,6 +57,7 @@ const startServer = async () => {
     app.use("/api/centralfeedback",authenticateToken,feedbackRoutes); 
     app.use("/api/blogs",authenticateToken,blogRoutes);
     app.use("/api/Parking",authenticateToken,parkingRouter);
+    app.use("/api/gym", authenticateToken,gymRouter)
     // Start Server
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
