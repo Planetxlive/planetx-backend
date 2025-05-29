@@ -1,4 +1,4 @@
-const Gym = require("../../modals/gym");
+const Gym = require("../../modals/Gym");
 const User = require("../../modals/Users");
 
 const createGym = async (req, res) => {
