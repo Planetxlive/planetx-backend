@@ -26,9 +26,9 @@ const blogSchema = new mongoose.Schema({
     required: true,
   },
   location: {
-    city: { type: String, required: false },
-    state: { type: String, required: false },
-    locality: { type: String, required: false },
+    city: { type: String, required: true },
+    state: { type: String, required: true },
+    locality: { type: String, required: true },
     subLocality: { type: String },
     apartment: { type: String },
     houseNumber: { type: String },
