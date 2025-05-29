@@ -48,14 +48,14 @@ const startServer = async () => {
 
     app.use("/api/auth", authRoutes);
 
-    // Protected Routes (Require authentication)
-    app.use("/api/properties", authenticateToken, propertyRoutes);
-    app.use("/api/wishlist", authenticateToken, wishlistRoutes);
-    app.use("/api/highlights", authenticateToken, highlightRoutes);
+    
+    app.use("/api/properties",authenticateToken, propertyRoutes);
+    app.use("/api/wishlist",authenticateToken,wishlistRoutes);
+    app.use("/api/highlights",authenticateToken, highlightRoutes);
     app.use("/api/admin", authenticateToken, adminPanelRoutes);
-    app.use("/api/centralfeedback", authenticateToken ,feedbackRoutes); // Remove authenticateToken for GET
-    app.use("/api/blogs", authenticateToken, blogRoutes);
-    app.use("/api/Parking", authenticateToken,parkingRouter);
+    app.use("/api/centralfeedback",authenticateToken,feedbackRoutes); 
+    app.use("/api/blogs",authenticateToken,blogRoutes);
+    app.use("/api/Parking",authenticateToken,parkingRouter);
     // Start Server
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
