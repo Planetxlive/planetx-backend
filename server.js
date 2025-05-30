@@ -21,7 +21,7 @@ const app = express();
 // Middleware
 // Configure CORS with specific options
 const corsOptions = {
-  origin: ['http://localhost:8080','exp://192.168.1.2:8081','http://localhost:8081' , 'https://www.planetx-live.com', 'https://planetx-live.com',"http://localhost:3000","https://planetx-admin.vercel.app"],
+  origin: ['http://localhost:8080', 'https://planetx-frontend-13tdlyy13-planetxs-projects.vercel.app','exp://192.168.1.2:8081','http://localhost:8081' , 'https://www.planetx-live.com', 'https://planetx-live.com',"http://localhost:3000","https://planetx-admin.vercel.app"],
  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true,
