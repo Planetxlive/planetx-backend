@@ -12,7 +12,6 @@ const createParking = async (req, res) => {
 
   const {
     spotNumber,
-    location,
     city,
     state,
     locality,
@@ -28,18 +27,17 @@ const createParking = async (req, res) => {
     coordinates,
   } = req.body;
 
+  console.log(req.body)
   // Validate required fields
-  if (!spotNumber || !location || !city || !state || !locality || hourlyRate === undefined) {
+  if (!spotNumber || !city || !state || !locality || hourlyRate === undefined) {
     return res.status(400).json({
       error: "spotNumber, location, city, state, locality, and hourlyRate are required",
     });
   }
-
   try {
     const parking = new Parking({
       userId,
       spotNumber,
-      location,
       city,
       state,
       locality,
