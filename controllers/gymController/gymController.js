@@ -33,11 +33,11 @@ const createGym = async (req, res) => {
     additionalFeatures,
     pricing
   } = req.body;
-
+  
   if (!gymType || !city || !state || !gymName || !gymDescription || !capacity || 
-      !equipmentType || !membershipType || !amenitites || !availableStatus) {
-    return res.status(400).json({ error: "All required fields must be provided" });
-  }
+    !equipmentType || !membershipType || !amenitites || !availableStatus) {
+      return res.status(400).json({ error: "All required fields must be provided" });
+    }
 
   try {
     const gym = new Gym({

@@ -11,10 +11,6 @@ const parkingSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  location: {
-    type: String,
-    required: true,
-  },
   city: {
     type: String,
     required: true,
