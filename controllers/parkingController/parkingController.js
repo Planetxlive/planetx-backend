@@ -23,6 +23,7 @@ const createParking = async (req, res) => {
     size,
     amenitiesDetails,
     images,
+    video,
     accessibility,
     coordinates,
   } = req.body;
@@ -49,6 +50,7 @@ const createParking = async (req, res) => {
       size,
       amenitiesDetails,
       images,
+      video,
       accessibility,
       coordinates,
     });

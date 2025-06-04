@@ -59,7 +59,10 @@ const parkingSchema = new mongoose.Schema({
     valetService: { type: Boolean, default: false },
     coveredParking: { type: Boolean, default: false }
   },
-
+  video: {
+    type: String,
+    required: true
+  },
   images: [{
     type: String,
     validate: {
