@@ -160,39 +160,40 @@ const getGymById = async (req, res) => {
 };
 
 const getGyms = async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
-  const { city, state, gymType, availableStatus } = req.query;
+  // const page = parseInt(req.query.page) || 1;
+  // const limit = parseInt(req.query.limit) || 10;
+  // const { city, state, gymType, availableStatus } = req.query;
 
-  if (page < 1 || limit < 1) {
-    return res.status(400).json({ error: "Page and limit must be positive integers" });
-  }
+  // if (page < 1 || limit < 1) {
+  //   return res.status(400).json({ error: "Page and limit must be positive integers" });
+  // }
 
-  const skip = (page - 1) * limit;
-  const query = {};
+  // const skip = (page - 1) * limit;
+  // const query = {};
 
-  if (city) query.city = city;
-  if (state) query.state = state;
-  if (gymType) query.gymType = gymType;
-  if (availableStatus) query.availableStatus = availableStatus;
+  // if (city) query.city = city;
+  // if (state) query.state = state;
+  // if (gymType) query.gymType = gymType;
+  // if (availableStatus) query.availableStatus = availableStatus;
 
   try {
-    const total = await Gym.countDocuments(query);
-    const totalPages = Math.ceil(total / limit);
-    const hasNextPage = page < totalPages;
-    const hasPrevPage = page > 1;
+    // const total = await Gym.countDocuments(query);
+    // const totalPages = Math.ceil(total / limit);
+    // const hasNextPage = page < totalPages;
+    // const hasPrevPage = page > 1;
 
-    const gyms = await Gym.find(query)
-      .skip(skip)
-      .limit(limit)
-      .sort({ createdAt: -1 });
+    const gyms = await Gym.find()
+    // const gyms = await Gym.find(query)
+      // .skip(skip)
+      // .limit(limit)
+      // .sort({ createdAt: -1 });
 
     res.status(200).json({ 
       gyms, 
-      totalPages, 
-      hasNextPage, 
-      hasPrevPage,
-      total
+      // totalPages, 
+      // hasNextPage, 
+      // hasPrevPage,
+      // total
     });
   } catch (error) {
     res.status(500).json({ error: "Failed to get gyms" });

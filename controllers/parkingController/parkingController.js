@@ -161,28 +161,28 @@ const getParkingById = async (req, res) => {
 
 // Get all parkings with pagination
 const getParkings = async (req, res) => {
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 10;
+  // const page = parseInt(req.query.page) || 1;
+  // const limit = parseInt(req.query.limit) || 10;
 
-  if (page < 1 || limit < 1) {
-    return res.status(400).json({ error: "Page and limit must be positive integers" });
-  }
+  // if (page < 1 || limit < 1) {
+  //   return res.status(400).json({ error: "Page and limit must be positive integers" });
+  // }
 
-  const skip = (page - 1) * limit;
+  // const skip = (page - 1) * limit;
 
   try {
-    const total = await Parking.countDocuments();
-    const totalPages = Math.ceil(total / limit);
+    // const total = await Parking.countDocuments();
+    // const totalPages = Math.ceil(total / limit);
     const parkings = await Parking.find()
-      .skip(skip)
-      .limit(limit)
+      // .skip(skip)
+      // .limit(limit)
       .populate('reviews');
 
     res.status(200).json({
       parkings,
-      totalPages,
-      hasNextPage: page < totalPages,
-      hasPrevPage: page > 1,
+      // totalPages,
+      // hasNextPage: page < totalPages,
+      // hasPrevPage: page > 1,
     });
   } catch (error) {
     console.error("GET PARKINGS ERROR:", error);
