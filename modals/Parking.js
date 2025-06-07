@@ -11,10 +11,6 @@ const parkingSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  location: {
-    type: String,
-    required: true,
-  },
   city: {
     type: String,
     required: true,
@@ -63,7 +59,10 @@ const parkingSchema = new mongoose.Schema({
     valetService: { type: Boolean, default: false },
     coveredParking: { type: Boolean, default: false }
   },
-
+  video: {
+    type: String,
+    required: true
+  },
   images: [{
     type: String,
     validate: {
