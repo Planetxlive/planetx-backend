@@ -34,6 +34,7 @@ const createBlog = async (req, res) => {
 
     res.status(201).json({ message: "Blog created successfully", blog });
   } catch (error) {
+    // console.log(error)
     res.status(500).json({ error: "Failed to create blog" });
   }
 };
@@ -54,7 +55,6 @@ const updateBlog = async (req, res) => {
   if (!title || !category || !description || !contactInfo || !location) {
     return res.status(400).json({ error: "All fields are required" });
   }
-
   try {
     const blog = await Blog.findById(blogId);
     if (!blog) {
@@ -62,13 +62,14 @@ const updateBlog = async (req, res) => {
     }
     if (blog.userId.toString() !== userId) {
       return res
-        .status(403)
-        .json({ error: "Unauthorized to update this blog" });
+      .status(403)
+      .json({ error: "Unauthorized to update this blog" });
     }
+    console.log(image === undefined ? blog.image : image)
     blog.title = title;
     blog.category = category;
     blog.description = description;
-    blog.image = image;
+    blog.image = image === undefined ? blog.image : image;
     blog.location = location;
     blog.contactInfo = contactInfo;
     await blog.save();
