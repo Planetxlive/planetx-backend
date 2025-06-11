@@ -68,7 +68,7 @@ const updateBlog = async (req, res) => {
     blog.title = title;
     blog.category = category;
     blog.description = description;
-    blog.image = image;
+    blog.image = image !== undefined ? image : blog.image;
     blog.location = location;
     blog.contactInfo = contactInfo;
     await blog.save();
