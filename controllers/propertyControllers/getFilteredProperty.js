@@ -1,60 +1,77 @@
 const Property = require("../../modals/PropertyModals/BasePropertySchema");
-const { getPropertyPrice, getPropertyAreaFilter } = require("../../utils");
+const { getPropertyPrice } = require("../../utils");
 
 const getFilteredProperty = async (req, res) => {
   try {
+    console.log("Query params:", req.query);
     const {
       propertyType,
       category,
-      // bedrooms,
-      // role,
-      // furnished,
-      minBudget,
-      maxBudget,
-      // minArea,
-      // maxArea,
+      minPrice,
+      maxPrice,
     } = req.query;
 
-  const minBudgetValue = parseFloat(req.query.minPrice);
-  const maxBudgetValue = parseFloat(req.query.maxPrice); 
-
-    let filter = {};
+    let filter = { propertyStatus: "Active" };
     if (propertyType) filter.propertyType = propertyType;
     if (category) filter.category = category;
-    // if (bedrooms) filter.bedrooms = bedrooms;
-    // if (role) filter.role = role;
-    // if (furnished !== undefined) filter.furnished = furnished;
-    const propertyData = await Property.find(filter);
+
+    console.log("Filter:", filter);
+
+    const propertyData = await Property.find(filter)
+      .populate({
+        path: "reviews",
+        populate: { path: "user", select: "name email" },
+      })
+      .lean();
+
+    console.log("Found properties:", propertyData.length);
 
     const cloudfrontBaseUrl = process.env.CLOUDFRONT_BASE_URL;
     const modifiedProperties = propertyData.map((property) => {
-      const modifiedImageUrl = property.images.map(img => {
-        const fileNameWithPath = img.url.split("amazonaws.com/")[1] || img.url;
-        return `${cloudfrontBaseUrl}${fileNameWithPath}`;
-      })
+      const modifiedImageUrl = property.images?.map((image) => {
+        const s3Base = process.env.S3_BASE_URL;
+        const relativePath = image.url.replace(s3Base, "");
+        return {
+          ...image,
+          url: `${cloudfrontBaseUrl}${relativePath}`,
+        };
+      }) || [];
+      
       return {
         ...property,
         images: modifiedImageUrl,
       }
-    })
-
-    const filteredByPrice = modifiedProperties.filter((property) => {
-      const { price } = getPropertyPrice(property._doc);
-      const numericPrice = parseFloat(price);
-      return (
-        !isNaN(numericPrice) &&
-        numericPrice >= minBudgetValue &&
-        numericPrice <= maxBudgetValue
-      );
     });
+
+    let filteredProperties = modifiedProperties;
     
-    // const filteredData = filteredByPrice.filter((property) => {
-    //   const { minArea: computedMin, maxArea: computedMax } =
-    //     getPropertyAreaFilter(property);
-    //   return computedMin >= minArea && computedMax <= maxArea;
-    // });
-    // console.log("Filtered Data:", filteredData);
-    res.status(200).json({ success: true, data: filteredByPrice, lenght: filteredByPrice.length });
+    // Apply price filtering if minPrice and maxPrice are provided
+    if (minPrice || maxPrice) {
+      const minPriceValue = parseFloat(minPrice) || 0;
+      const maxPriceValue = parseFloat(maxPrice) || Infinity;
+      
+      console.log("Price range:", { minPriceValue, maxPriceValue });
+      
+      filteredProperties = modifiedProperties.filter((property) => {
+        const price = property.pricing?.price?.amount || 
+                     property.pricing?.expectedPrice || 
+                     property.pricing?.monthlyRent || 
+                     property.price || 0;
+        const numericPrice = parseFloat(price);
+        console.log("Property price:", { id: property._id, price: numericPrice });
+        return !isNaN(numericPrice) && 
+               numericPrice >= minPriceValue && 
+               numericPrice <= maxPriceValue;
+      });
+    }
+
+    console.log("Filtered properties:", filteredProperties.length);
+
+    res.status(200).json({ 
+      success: true, 
+      properties: filteredProperties,
+      total: filteredProperties.length 
+    });
   } catch (error) {
     console.error("Error fetching properties:", error);
     res.status(500).json({ success: false, message: "Server Error" });
