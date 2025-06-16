@@ -40,13 +40,14 @@ const {
 } = require("../controllers/propertyControllers/getReviewsController.js"); // New controller
 const { postNotification } = require("../controllers/adminPanelControllers/postNotificationController");
 const { postNotifications } = require("../controllers/propertyControllers/postNotificationController");
+const { authenticateToken } = require("../middleware/authMiddleware.js");
 
 const router = express.Router();
 
 //seller
-router.get("/alluser-properties", getActiveProperties);
+router.get("/alluser-properties",authenticateToken ,getActiveProperties);
 router.post(
-  "/add",
+  "/add",authenticateToken,
   addProperty
 );
 router.patch(
@@ -55,23 +56,23 @@ router.patch(
     { name: "images", maxCount: 5 },
     { name: "video", maxCount: 1 },
   ]),
-  uploadToS3,
+  uploadToS3, authenticateToken ,
   updateProperty
 );
-router.post("/deleteProperty", submitFeedbackAndDeleteProperty);
+router.post("/deleteProperty",authenticateToken , submitFeedbackAndDeleteProperty);
 
 //buyer
 router.get("/availableProperty", getAvailableProperties);
 router.get("/availableFilteredProperty", getFilteredProperty);
-router.post("/add-review", postReview);
-router.patch("/edit-review/:reviewId", editReview);
-router.delete("/delete-review/:reviewId", deleteReview);
-router.get("/nearby-properties", getNearbyProperties);
+router.post("/add-review", authenticateToken, postReview);
+router.patch("/edit-review/:reviewId", authenticateToken, editReview);
+router.delete("/delete-review/:reviewId", authenticateToken, deleteReview);
+router.get("/nearby-properties", authenticateToken, getNearbyProperties);
 router.get("/category-properties", getPropertiesByCategory);
-router.get("/notification/:userId", getNotifications);
+router.get("/notification/:userId", authenticateToken, getNotifications);
 router.get("/getProperty/:propertyId", getPropertyById);
 router.get("/reviews/:propertyId", getReviews); // New route
-router.post("/post-notifications",postNotifications);
+router.post("/post-notifications", authenticateToken, postNotifications);
 
 
 

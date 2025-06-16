@@ -50,7 +50,7 @@ const startServer = async () => {
     app.use("/api/auth", authRoutes);
 
     
-    app.use("/api/properties",authenticateToken, propertyRoutes);
+    app.use("/api/properties", propertyRoutes);
     app.use("/api/wishlist",authenticateToken,wishlistRoutes);
     app.use("/api/highlights",authenticateToken, highlightRoutes);
     app.use("/api/admin", authenticateToken, adminPanelRoutes);

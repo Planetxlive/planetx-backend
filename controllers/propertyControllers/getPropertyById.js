@@ -5,18 +5,18 @@ const User = require("../../modals/Users");
 exports.getPropertyById = async (req, res) => {
   try {
     const { propertyId } = req.params;
-    const userId = req.user?.userId;
+    // const userId = req.user?.userId;
 
 
 
-    if (!userId) {
-      return res.status(400).json({ error: "User ID is required." });
-    }
+    // if (!userId) {
+    //   return res.status(400).json({ error: "User ID is required." });
+    // }
 
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ error: "User not found." });
-    }
+    // const user = await User.findById(userId);
+    // if (!user) {
+    //   return res.status(404).json({ error: "User not found." });
+    // }
 
     // Find the property by ID
     const property = await Property.findById(propertyId)
