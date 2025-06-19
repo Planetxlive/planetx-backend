@@ -12,12 +12,14 @@ const { logoutUser } = require("../controllers/logoutController");
 const {
   loginAdmin,
 } = require("../controllers/adminPanelControllers/loginAdmin");
+const { getUserById } = require("../controllers/userControllers/getUserById");
 const router = express.Router();
 
 router.post("/send-otp", sendOTP);
 router.post("/verify-otp", verifyOTP);
 router.post("/verify-newuser",verifyNewUserOTP);
 router.post("/login-admin", loginAdmin);
+router.get("/get-user-by-id/:id", getUserById);
 router.patch("/update-user", authenticateToken, updateUser);
 router.get("/get-user", authenticateToken, getUser);
 router.delete("/delete-user", authenticateToken, deleteUser);
