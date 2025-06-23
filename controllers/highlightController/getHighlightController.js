@@ -2,15 +2,13 @@ const Property = require("../../modals/PropertyModals/BasePropertySchema");
 const User = require("../../modals/Users");
 
 exports.getAvailablePropertiesForReel = async (req, res) => {
-  const { userId } = req.user;
-
+  const { userId } = req.user;  
   if (!userId) {
     return res.status(400).json({ error: "User ID is required." });
   }
 
   try {
     const user = await User.findById(userId).select("name mobile");
-
     if (!user) {
       return res.status(404).json({ error: "User not found." });
     }
@@ -33,7 +31,6 @@ exports.getAvailablePropertiesForReel = async (req, res) => {
       .select(
         "video location description pricing user reviews propertyStatus builtUpArea highlights features category bedrooms bathrooms"
       );
-
     if (!availableProperties.length) {
       return res.status(404).json({
         message: "No available properties found.",
@@ -41,15 +38,14 @@ exports.getAvailablePropertiesForReel = async (req, res) => {
       });
     }
 
-
     const propertiesForReel = availableProperties.map((property) => ({
-      propertyId: property._id,
+      propertyId: property._id || "N/A",
       video: property.video,
       user: {
-        name: property.user.name,
-        mobile: property.user.mobile,
+        name: property.user?.name || "N/A",
+        mobile: property.user?.mobile || "N/A",
       },
-      location: property.location,
+      location: property.location || "N/A",
       description: property.description || "No description available",
       pricing: property.pricing || [],
       reviews: property.reviews || [],
@@ -74,19 +70,8 @@ exports.getAvailablePropertiesForReel = async (req, res) => {
           : "N/A"),
     }));
 
-
-
-    const cloudfrontBaseUrl = process.env.CLOUDFRONT_BASE_URL;
-    const s3Base = process.env.S3_BASE_URL;
-
-    const modifiedProperties = propertiesForReel.map((property) => {
-      const video = property.video || "";
-      const relativePath = video.replace(s3Base, "");
-      return {
-        ...property,
-        video: video ? `${cloudfrontBaseUrl}${relativePath}` : "",
-      };
-    });
+    // No CloudFront logic, use video as is
+    const modifiedProperties = propertiesForReel;
 
     res.status(200).json({
       message: "Available properties fetched successfully for the reel.",

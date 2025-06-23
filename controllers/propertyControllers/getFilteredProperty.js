@@ -26,20 +26,11 @@ const getFilteredProperty = async (req, res) => {
 
     console.log("Found properties:", propertyData.length);
 
-    const cloudfrontBaseUrl = process.env.CLOUDFRONT_BASE_URL;
+    // No CloudFront logic, use images as is
     const modifiedProperties = propertyData.map((property) => {
-      const modifiedImageUrl = property.images?.map((image) => {
-        const s3Base = process.env.S3_BASE_URL;
-        const relativePath = image.url.replace(s3Base, "");
-        return {
-          ...image,
-          url: `${cloudfrontBaseUrl}${relativePath}`,
-        };
-      }) || [];
-      
       return {
         ...property,
-        images: modifiedImageUrl,
+        images: property.images || [],
       }
     });
 

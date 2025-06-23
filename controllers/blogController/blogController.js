@@ -147,7 +147,6 @@ const getBlogs = async (req, res) => {
 };
 
 const getBlogdByUserId = async (req, res) => {
-  console.log("getting post for user buddy");
   const userId = req.user.userId;
   if (!userId) {
     return res.status(400).json({ error: "User ID is required" });

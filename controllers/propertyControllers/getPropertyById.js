@@ -7,8 +7,6 @@ exports.getPropertyById = async (req, res) => {
     const { propertyId } = req.params;
     // const userId = req.user?.userId;
 
-
-
     // if (!userId) {
     //   return res.status(400).json({ error: "User ID is required." });
     // }
@@ -27,26 +25,14 @@ exports.getPropertyById = async (req, res) => {
       .populate("user", "name mobile whatsappMobile email") // Optionally populate user details
       .lean();
 
-
     if (!property) {
       return res.status(404).json({ error: "Property not found." });
     }
 
-    // Handle image URLs with CloudFront CDN
-    const cloudfrontBaseUrl = process.env.CLOUDFRONT_BASE_URL;
-    const s3Base = process.env.S3_BASE_URL;
-
-    const modifiedImageUrl = property.images?.map((image) => {
-      const relativePath = image.url.replace(s3Base, "");
-      return {
-        ...image,
-        url: `${cloudfrontBaseUrl}${relativePath}`,
-      };
-    }) || [];
-
+    // No CloudFront logic, use images as is
     const modifiedProperty = {
       ...property,
-      images: modifiedImageUrl,
+      images: property.images || [],
     };
 
     res.status(200).json({
